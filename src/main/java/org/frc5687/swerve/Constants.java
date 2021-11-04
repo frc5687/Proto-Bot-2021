@@ -10,7 +10,7 @@ public class Constants {
     public static final double METRIC_FLUSH_PERIOD = 1.0;
     public static final double UPDATE_PERIOD = 0.02;
     public static final double EPSILON = 0.00001;
-
+    public static final double DELTA = 1e-2; // Execptable error for unit testing
     public static class DriveTrain {
 
         public static final double WIDTH = 0.6223;
