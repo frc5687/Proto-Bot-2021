@@ -10,14 +10,15 @@ public class Limelight {
         camera = new PhotonCamera("limelight");
     }
 
-    public void setLeds(short mode){
-        switch(mode){
-            case 0: 
-            camera.setLED(VisionLEDMode.kOff);
-            break;
-            case 1:
-            camera.setLED(VisionLEDMode.kOn);
-            break;
-        }
+    public void enableLEDS(){
+        camera.setLED(VisionLEDMode.kOn);
+    }
+
+    public void disableLEDS(){
+        camera.setLED(VisionLEDMode.kOff);
+    }
+
+    public void blink(){
+        camera.setLED(VisionLEDMode.kBlink);
     }
 }
