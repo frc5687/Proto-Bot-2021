@@ -30,7 +30,7 @@ public class Constants {
 
         public static final double DEADBAND = 0.1;
 
-        public static final double MAX_MPS = 3.5; // Max speed of robot (m/s) .
+        public static double MAX_MPS = 3.5; // Max speed of robot (m/s) .
 
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final double MAX_MPSS = 0.5; // Max acceleration of robot (m/s^2)
@@ -86,5 +86,20 @@ public class Constants {
         public static final double SENSOR_AZIMUTH_ANG_VELOCITY_NOISE = 0.1; // radians per sec
         public static final double SENSOR_WHEEL_ANG_VELOCITY_NOISE = 0.1; // radians per sec
         public static final double CONTROL_EFFORT = VOLTAGE;
+    } 
+    public static class Maverick{
+        public static short numberOfWaypoints = 1; // Dropped down from four so Maverick doesn't overrun the position
+        public static double[] waypointsX = {12.10, 0.0, 0.0, 0.0};
+        public static double[] waypointsY = {3.67, 0.0, 0.0, 0.0};
+        public static double[] rotations = {2.0, 0.0, 0.0, 0.0};
+        public static double[] tolerences = {0.0, 0.0, 0.0, 0.0};
+        public static double[] speeds = {3.5, 3.5, 3.5, 3.5, 3.5};
+        public static boolean[] afterburner = {false, false, false, false};
+    }
+
+    public static class Jetson{
+            public static short JETSON_PORT = 27002;
+            public static short RIO_PORT = 27001;
+            public static short PERIOD = 10;
     }
 }

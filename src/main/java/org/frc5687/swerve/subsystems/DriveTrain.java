@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.trajectory.constraint.SwerveDriveKinematicsConstraint;
+
+import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.OI;
 import org.frc5687.swerve.RobotMap;
 import org.frc5687.swerve.util.OutliersContainer;
@@ -113,14 +115,34 @@ public class DriveTrain extends OutliersSubsystem {
         _backLeft.periodic();
     }
 
+    public double getXVelocity(){
+        //Gets the current X velocity from the IMU
+        return _imu.getVelocityX();
+    }
+
+    public double getYVelocity(){
+        //Get the current Y velocity from the IMU
+        return _imu.getVelocityY();
+    }
+
+    public void updateOdomerty(){
+        // Update odometry with the robots built in sensors 
+        _odomerty.update(
+            getHeading(),
+            _frontLeft.getState(),
+            _frontRight.getState(),
+            _backLeft.getState(),
+            _backRight.getState());
+    }
+
+    public Pose2d updatePoseVSLAM(){
+        // Will splice in relivent code later
+        return _odomerty.getPoseMeters();
+    }
+
     @Override
     public void periodic() {
-        _odomerty.update(
-                getHeading(),
-                _frontLeft.getState(),
-                _frontRight.getState(),
-                _backLeft.getState(),
-                _backRight.getState());
+        updateOdomerty();
     }
 
     @Override
@@ -138,8 +160,31 @@ public class DriveTrain extends OutliersSubsystem {
 
         metric("BR/Encoder Wheel Vel", _backRight.getWheelVelocity());
         metric("BR/Predicted Wheel Vel", _backRight.getPredictedWheelVelocity());
-
+        metric("VSLAM Pose", updatePoseVSLAM().toString());
         metric("Odometry Pose", getOdometryPose().toString());
+    }
+
+    
+    public void poseFollower(Pose2d pose, Rotation2d heading, double vel) {
+        ChassisSpeeds adjustedSpeeds = _controller.calculate(_odomerty.getPoseMeters(), pose, vel, heading);
+        SwerveModuleState[] moduleStates = _kinematics.toSwerveModuleStates(adjustedSpeeds);
+        SwerveDriveKinematics.normalizeWheelSpeeds(moduleStates, Constants.DriveTrain.MAX_MPS);
+        setFrontLeftModuleState(moduleStates[0]);
+        setFrontRightModuleState(moduleStates[1]);
+        setBackLeftModuleState(moduleStates[2]);
+        setBackRightModuleState(moduleStates[3]);
+    }
+
+    
+    public boolean MaverickDone(Pose2d destnation){
+        //Is Maverick at the end position
+        Pose2d cPose =  _odomerty.getPoseMeters();
+        if(cPose == destnation){
+            //Is the robots position equal to the Maverick supplied destenation
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public void setFrontRightModuleState(SwerveModuleState state) {

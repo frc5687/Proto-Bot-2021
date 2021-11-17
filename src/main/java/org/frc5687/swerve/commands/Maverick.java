@@ -1,16 +1,35 @@
 package org.frc5687.swerve.commands;
 
+import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 
-public class Maverick {
-    
-    private Pose2d destination;
+
+public class Maverick extends OutliersCommand{
+    private Pose2d destnation;
     private DriveTrain driveTrain;
+    
 
-    public Maverick(DriveTrain DriveTrain){
-        driveTrain = DriveTrain;
+    /**
+     * Maverick State-Space Model (which may not be added)
+     * Properties
+     * States: [Meters Pre Second]
+     * Input: [Distance to target]
+     * Output: [Velocity]
+     * @param _driveTrain
+     */
+    
+    public Maverick(DriveTrain _driveTrain){
+        driveTrain = _driveTrain;
+        addRequirements(driveTrain);
+    }
+
+    public void Afterburner(){
+        //Pushes the drive train as fast as it will safely go hyptheticly 
+        Constants.DriveTrain.MAX_MPS = 4.0;
     }
 
     public double getVelocityTheta(double vx, double vy){
@@ -41,5 +60,54 @@ public class Maverick {
             return false;
         }
     }
+
+    public void genLinearSystem(){
+
+    }
+
+    public void wayPointMove(){
+        //Iterate through all of the waypoints
+        metric("MAVERICK", "Running"); 
+        for(int i = 0; i <= Constants.Maverick.numberOfWaypoints; i++){
+            metric("MAVERICK_Points", "At waypoint: " + i);
+            //Create translations and rotations based off of the Maverick presets
+            Translation2d move = new Translation2d(Constants.Maverick.waypointsX[i], Constants.Maverick.waypointsY[i]);
+            Rotation2d rotation = new Rotation2d(Constants.Maverick.rotations[i]);
+            destnation = new Pose2d(move, rotation);
+            //Update the speeds with the realivent Maverick speed
+            Constants.DriveTrain.MAX_MPS = Constants.Maverick.speeds[i];
+            //Move the robot to the pose and do so with the linear velocity reference as determined by getTheAngluarVelocityVector()
+            driveTrain.poseFollower(destnation, rotation, getTheAngluarVelocityVector(driveTrain.getXVelocity(), driveTrain.getYVelocity()));
+        }
+        metric("MAVERICK", "Move(s) Complete");
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        metric("MAVERICK", "Init");
+        wayPointMove();
+    }
+
+    @Override public void execute(){
+        super.execute();
+    }
     
+    @Override
+    public boolean isFinished(){
+        super.isFinished();
+        //Is the robot at it's end position
+        if(driveTrain.MaverickDone(destnation)){
+            metric("MAVERICK", "Still working");
+            return true;
+        }else{
+            metric("MAVERICK", "Finished");
+            return false;
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted){
+        super.end(interrupted);
+    }
 }
