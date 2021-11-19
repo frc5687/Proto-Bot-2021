@@ -5,9 +5,13 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
+import org.frc5687.infiniterecharge.robot.commands.Blinkins;
 import org.frc5687.infiniterecharge.robot.util.*;
 
 /**
@@ -26,6 +30,8 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     private String _name;
 
     private RobotContainer _robotContainer;
+
+    private Blinkins _blinkins;
 
     private boolean _fmsConnected;
 
@@ -46,12 +52,15 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         RioLogger.getInstance().init(_fileLogLevel, _dsLogLevel);
         LiveWindow.disableAllTelemetry();
         DriverStation.getInstance().silenceJoystickConnectionWarning(true);
-        
+
         metric("Identity", _identityMode.toString());
         info("Robot " + _name + " running in " + _identityMode.toString() + " mode");
 
         _robotContainer = new RobotContainer(this, _identityMode);
         _robotContainer.init();
+
+        //initialize the blinkins on port 9 with a buffer size of 60
+        _blinkins = new Blinkins(9, 60);
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
@@ -105,6 +114,9 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     public void teleopPeriodic() {}
 
     private void ourPeriodic() {
+        //blinkin rainbow
+        updateRainbow();
+        _blinkins.updateData();
 
         // Example of starting a new row of metrics for all instrumented objects.
         // MetricTracker.newMetricRowAll();
@@ -188,9 +200,26 @@ public class Robot extends OutliersRobot implements ILoggingSource {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
     private void update() {}
+
+    private int rainbowFirstPixelHue = 0;
+
+    private void updateRainbow() {
+        // For every pixel
+        for (var i = 0; i < _blinkins.bufferSize; i++) {
+            // Calculate the hue - hue is easier for rainbows because the color
+            // shape is a circle so only one value needs to precess
+            final int hue = (rainbowFirstPixelHue + (i * 180 / _blinkins.bufferSize)) % 180;
+            // Set the value
+            _blinkins.blinkinBuffer.setHSV(i, hue, 255, 128);
+        }
+        // Increase by to make the rainbow "move"
+        rainbowFirstPixelHue += 3;
+        // Check bounds
+        rainbowFirstPixelHue %= 180;
+    }
 }
