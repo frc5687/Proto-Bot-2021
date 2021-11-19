@@ -199,8 +199,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
                         break;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
     }
 
