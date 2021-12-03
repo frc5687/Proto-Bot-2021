@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,6 +24,9 @@ public class Robot extends OutliersRobot implements ILoggingSource {
             OutliersContainer.IdentityMode.competition;
     private RioLogger.LogLevel _dsLogLevel = RioLogger.LogLevel.warn;
     private RioLogger.LogLevel _fileLogLevel = RioLogger.LogLevel.warn;
+    private Limelight limelight;
+
+    private Blinkins blinkins;
 
     private int _updateTick = 0;
 
@@ -54,6 +59,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _robotContainer = new RobotContainer(this, _identityMode);
         _timer = new Timer();
         _robotContainer.init();
+        blinkins = new Blinkins(0, 30);
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
@@ -116,9 +122,11 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         CommandScheduler.getInstance().run();
         update();
         updateDashboard();
+        updateRainbow();
     }
 
     /** This function is called periodically during test mode. */
+
     @Override
     public void testPeriodic() {
         CommandScheduler.getInstance().run();
@@ -198,4 +206,31 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     }
 
     private void update() {}
+
+
+
+    private int rainbowFirstPixelHue = 0;
+
+    boolean update = false;
+    private void updateRainbow() {
+        if(!update) {
+            update = true;
+            return;
+        }
+        update = false;
+        // For every pixel
+        for (var i = 0; i < blinkins.blinkinBuffer.getLength(); i++) {
+            // Calculate the hue - hue is easier for rainbows because the color
+            // shape is a circle so only one value needs to precess
+            final int hue = (rainbowFirstPixelHue + (i * 180 / blinkins.blinkinBuffer.getLength())) % 180;
+            // Set the value
+            blinkins.blinkinBuffer.setHSV(i, hue, 255, 128);
+        }
+        // Increase by to make the rainbow "move"
+        rainbowFirstPixelHue += 3;
+        // Check bounds
+        rainbowFirstPixelHue %= 180;
+
+        this.blinkins.update();
+    }
 }
