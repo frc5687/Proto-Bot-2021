@@ -26,11 +26,12 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     private RioLogger.LogLevel _fileLogLevel = RioLogger.LogLevel.warn;
     private Limelight limelight;
 
-    private Blinkins blinkins;
 
     private int _updateTick = 0;
 
     private String _name;
+
+    private Blinken lights;
 
     private RobotContainer _robotContainer;
 
@@ -59,12 +60,14 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _robotContainer = new RobotContainer(this, _identityMode);
         _timer = new Timer();
         _robotContainer.init();
-        blinkins = new Blinkins(0, 30);
+        lights = new Blinken();
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
         _time = _timer.get();
         new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
+        //Set the blinkens to default
+        lights.setDefualt();
     }
 
     /**
@@ -114,15 +117,13 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     public void teleopPeriodic() {}
 
     private void ourPeriodic() {
-
+        //Way this code isn't in periodic I don't know
         // Example of starting a new row of metrics for all instrumented objects.
         // MetricTracker.newMetricRowAll();
         MetricTracker.newMetricRowAll();
         //        _robotContainer.periodic();
         CommandScheduler.getInstance().run();
-        update();
         updateDashboard();
-        updateRainbow();
     }
 
     /** This function is called periodically during test mode. */
@@ -203,34 +204,5 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         } catch (Exception e) {
 
         }
-    }
-
-    private void update() {}
-
-
-
-    private int rainbowFirstPixelHue = 0;
-
-    boolean update = false;
-    private void updateRainbow() {
-        if(!update) {
-            update = true;
-            return;
-        }
-        update = false;
-        // For every pixel
-        for (var i = 0; i < blinkins.blinkinBuffer.getLength(); i++) {
-            // Calculate the hue - hue is easier for rainbows because the color
-            // shape is a circle so only one value needs to precess
-            final int hue = (rainbowFirstPixelHue + (i * 180 / blinkins.blinkinBuffer.getLength())) % 180;
-            // Set the value
-            blinkins.blinkinBuffer.setHSV(i, hue, 255, 128);
-        }
-        // Increase by to make the rainbow "move"
-        rainbowFirstPixelHue += 3;
-        // Check bounds
-        rainbowFirstPixelHue %= 180;
-
-        this.blinkins.update();
     }
 }
