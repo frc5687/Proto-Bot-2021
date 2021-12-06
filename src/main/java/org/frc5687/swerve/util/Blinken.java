@@ -1,19 +1,21 @@
+/*********************************************************************************************
+ * Control the led light strips on the robot
+ * We don't extend the AddressableLED class as yes it does work, but it dosen't fix our format
+**********************************************************************************************/
 package org.frc5687.swerve.util;
 
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.RobotMap;
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
-public class Blinken extends AddressableLED{
+public class Blinken{
 
     private AddressableLEDBuffer buffer;
     private AddressableLED led;
     private short lenght;
 
     public Blinken() {
-        super(RobotMap.PWM.BLINKEN);
         //Setup the LED lenght(buffer) and map the port
         buffer = new AddressableLEDBuffer(Constants.Blinkens.buffer);
         led = new AddressableLED(RobotMap.PWM.BLINKEN);
