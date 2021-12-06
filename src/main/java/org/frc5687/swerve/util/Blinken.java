@@ -1,7 +1,5 @@
 package org.frc5687.swerve.util;
 
-import java.sql.Struct;
-
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.RobotMap;
 
