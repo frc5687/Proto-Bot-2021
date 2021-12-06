@@ -46,6 +46,13 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI;
     }
 
+    public static class Blinkens{
+            /***
+             * buffer is the amount of leds on the string
+             */
+            public static final short buffer = 20;
+    }
+
     public static class DifferentialSwerveModule {
 
         // update rate of our modules 5ms.
