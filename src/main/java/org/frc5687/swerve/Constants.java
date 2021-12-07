@@ -87,4 +87,9 @@ public class Constants {
         public static final double SENSOR_WHEEL_ANG_VELOCITY_NOISE = 0.1; // radians per sec
         public static final double CONTROL_EFFORT = VOLTAGE;
     }
+
+    public static class Intake{
+        public static final byte MAX_ANGLE_RAISED = 75;
+        public static final byte MIN_ANGLE_LOWERED = 0;
+    }
 }
