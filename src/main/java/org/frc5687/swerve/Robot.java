@@ -24,7 +24,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     private RioLogger.LogLevel _fileLogLevel = RioLogger.LogLevel.warn;
 
     private int _updateTick = 0;
-
+    private Blinkens blinkens;
     private String _name;
 
     private RobotContainer _robotContainer;
@@ -54,11 +54,13 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _robotContainer = new RobotContainer(this, _identityMode);
         _timer = new Timer();
         _robotContainer.init();
+        blinkens = new Blinkens();
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
         _time = _timer.get();
         new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
+        blinkens.setDefualt();
     }
 
     /**
@@ -101,11 +103,15 @@ public class Robot extends OutliersRobot implements ILoggingSource {
 
     /** This function is called periodically during autonomous. */
     @Override
-    public void autonomousPeriodic() {}
+    public void autonomousPeriodic() {
+        blinkens.setColor(0, 255, 255);
+    }
 
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        blinkens.setColor(255, 215, 0);
+    }
 
     private void ourPeriodic() {
 
@@ -116,6 +122,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         CommandScheduler.getInstance().run();
         update();
         updateDashboard();
+        blinkens.setColor(220, 20, 60);
     }
 
     /** This function is called periodically during test mode. */
@@ -131,6 +138,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         RioLogger.getInstance().close();
         _robotContainer.disabledInit();
         //        MetricTracker.flushAll();
+        blinkens.setColor(255, 0, 0);
     }
 
     @Override

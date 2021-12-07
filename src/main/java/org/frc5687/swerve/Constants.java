@@ -92,4 +92,9 @@ public class Constants {
         public static final byte MAX_ANGLE_RAISED = 75;
         public static final byte MIN_ANGLE_LOWERED = 0;
     }
+
+    public static class Blinken{
+        //Blinken strand lenghtc
+        public static final byte BUFFER = 20;
+    }
 }

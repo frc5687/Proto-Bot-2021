@@ -29,6 +29,7 @@ public class RobotMap {
      */
     public static class PWM {
         public static final byte INTAKE_SERVO = 1;
+        public static final byte BLINKEN = 0;
     }
 
     /**
