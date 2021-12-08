@@ -17,12 +17,17 @@ public class RobotContainer extends OutliersContainer {
 
     private Robot _robot;
     private DriveTrain _driveTrain;
+    /**One of the examples of the drive train.
+     * Here is the introduction to the level of code for this item.-igm407
+     */
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
         _robot = robot;
     }
-
+/**This is one of the examples of our functioning robot container.
+ * It states the item the will be modified.-igm407
+ */
     public void init() {
         _oi = new OI();
         _imu = new AHRS(SPI.Port.kMXP, (byte) 200);
@@ -33,7 +38,7 @@ public class RobotContainer extends OutliersContainer {
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
         _imu.reset();
     }
-
+/** */
     public void periodic() {}
 
     public void disabledPeriodic() {}

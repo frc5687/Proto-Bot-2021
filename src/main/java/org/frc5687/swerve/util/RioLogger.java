@@ -56,7 +56,7 @@ public class RioLogger {
     public static void log(LogLevel level, String source, String message) {
         getInstance().logint(level, source, message);
     }
-
+    @SuppressWarnings("all")
     private FileWriter fwriter;
     String log_name = null;
     String output_dir = "/U/"; // USB drive is mounted to /U on roboRIO
