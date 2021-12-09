@@ -14,7 +14,6 @@ public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
     private AHRS _imu;
-
     private Robot _robot;
     private DriveTrain _driveTrain;
 
