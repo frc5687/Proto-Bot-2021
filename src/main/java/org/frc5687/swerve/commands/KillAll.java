@@ -5,15 +5,19 @@
 
 package org.frc5687.swerve.commands;
 
+import org.frc5687.swerve.RobotMap;
 import org.frc5687.swerve.subsystems.DriveTrain;
 
-public class KillAll extends OutliersCommand{
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
-    DriveTrain driveTrain;
+public class KillAll extends OutliersCommand{
+    
+    private PowerDistributionPanel pdp;
+    private DriveTrain driveTrain;
     private boolean finished = false;
 
-    public KillAll(DriveTrain _driveTrain){
-        driveTrain = _driveTrain;
+    public KillAll(DriveTrain _driveTrain, PowerDistributionPanel pdp){
+        pdp = new PowerDistributionPanel(RobotMap.PDP.PDP_ID);
     }
 
     @Override
