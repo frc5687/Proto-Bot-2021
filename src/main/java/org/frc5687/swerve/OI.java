@@ -4,6 +4,8 @@ package org.frc5687.swerve;
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.util.Helpers.*;
 
+import org.frc5687.swerve.Constants.Maverick;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -16,6 +18,7 @@ public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
     protected Joystick _leftJoystick;
     protected Joystick _rightJoystick;
+    private Maverick maverick;
 
     protected Button _driverRightStickButton;
 
@@ -55,7 +58,9 @@ public class OI extends OutliersProxy {
                 new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.2);
     }
 
-    public void initializeButtons(DriveTrain driveTrain) {}
+    public void initializeButtons(DriveTrain driveTrain, Maverick maverick) {
+        
+    }
 
     public double getDriveY() {
         //        yIn = getSpeedFromAxis(_leftJoystick, _leftJoystick.getYChannel());

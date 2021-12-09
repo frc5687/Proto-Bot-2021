@@ -98,10 +98,10 @@ public class Maverick extends OutliersCommand{
         super.isFinished();
         //Is the robot at it's end position
         if(driveTrain.MaverickDone(destnation)){
-            metric("MAVERICK", "Still working");
+            metric("MAVERICK", "Finished...I hope");
             return true;
         }else{
-            metric("MAVERICK", "Finished");
+            metric("MAVERICK", "Still Working");
             return false;
         }
     }
