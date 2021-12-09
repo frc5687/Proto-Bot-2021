@@ -2,12 +2,10 @@
  * This kills all functions on the robot, it's still enable and can still move
  * Written By Gabriel Tower Dec 9 2021
  */
-
 package org.frc5687.swerve.commands;
 
 import org.frc5687.swerve.RobotMap;
 import org.frc5687.swerve.subsystems.DriveTrain;
-
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class KillAll extends OutliersCommand{

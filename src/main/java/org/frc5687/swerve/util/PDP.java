@@ -3,6 +3,7 @@ package org.frc5687.swerve.util;
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.RobotMap;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PDP {
     PowerDistributionPanel pdp;
 
@@ -17,7 +18,9 @@ public class PDP {
     }
 
     public void toHot(){
-
+        if(getTemp() >= Constants.PDP.EXCESIVE_HEAT){
+            System.out.println("PDP THERMA RUNAWAY");
+        }
     }
     
     public double getVoltage(){
