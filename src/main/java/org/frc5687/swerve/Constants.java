@@ -87,4 +87,10 @@ public class Constants {
         public static final double SENSOR_WHEEL_ANG_VELOCITY_NOISE = 0.1; // radians per sec
         public static final double CONTROL_EFFORT = VOLTAGE;
     }
+
+    public static class PDP{
+            public static final double EXCESIVE_CURRENT = 0.2; //In volts
+            public static final double EXCESIVE_VOLTAGE = 13.5; //In volts
+            public static final double BROWOUT_VOLTAGE = 7.0; //In volts
+    }
 }

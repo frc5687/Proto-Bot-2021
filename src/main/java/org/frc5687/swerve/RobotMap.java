@@ -39,7 +39,9 @@ public class RobotMap {
      * There should be an entry here for each PDP breaker, preferrably in numerical order. Note that
      * only on device can be connected to each breaker, so the numbers should be unique.
      */
-    public static class PDP {}
+    public static class PDP {
+        public static final int PDP_ID = 0;
+    }
 
     /**
      * There should be an entry here for each Analgo port, preferrably in numerical order. Note that
