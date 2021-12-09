@@ -92,5 +92,6 @@ public class Constants {
             public static final double EXCESIVE_CURRENT = 0.2; //In volts
             public static final double EXCESIVE_VOLTAGE = 13.5; //In volts
             public static final double BROWOUT_VOLTAGE = 7.0; //In volts
+            public static final double EXCESIVE_HEAT = 10; //F
     }
 }
