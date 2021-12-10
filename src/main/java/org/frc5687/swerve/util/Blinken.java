@@ -37,6 +37,23 @@ public class Blinken {
      led.setData(buffer);
    }
 
+   public void breathingLED(int initR,int initG,int initB) {
+        int rChangeBy = initR/8;
+        int gChangeBy = initG/8;
+        int bChangeBy = initB/8;
+        int r = initR;
+        int g = initG;
+        int b = initB;
+        for(var i = 0; i < 8; i++) {
+            for(var j = 0; j < buffer.getLength(); j++){
+                buffer.setRGB(i*8 + j,r,g,b);
+            }
+            r = r - rChangeBy;
+            g = g - gChangeBy;
+            b = b - bChangeBy;
+        }
+   }
+
    public void setDefault(){
        for(var i = 0; i < buffer.getLength(); i++){
            //Hot pink let's go
@@ -65,11 +82,16 @@ public class Blinken {
        YELLOW(255,255,0),
        LIGHTGREEN(0,255,0),
        GREEN(0,100,0),
+       CYAN(0,255,255)
        BLUE(0,0,255),
        LIGHTPURPLE(148,0,211),
        DARKPURPLE(75,0,130),
+       PINK(255,0,255),
+       BROWN(102,51,0),
+       GRAY(65,65,65),
        OUTLIERSGARNET(241,230,8),
        OUTLIERSYELLOW(248,192,14);
+       
 
         public final int r,g,b;
 
