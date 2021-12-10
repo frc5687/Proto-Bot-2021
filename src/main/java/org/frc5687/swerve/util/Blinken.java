@@ -8,15 +8,13 @@ import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.RobotMap;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-
-public class Blinken{
+public class Blinken {
 
     private AddressableLEDBuffer buffer;
     private AddressableLED led;
-    private short lenght;
 
     public Blinken() {
-        //Setup the LED lenght(buffer) and map the port
+        //Setup the LED length(buffer) and map the port
         buffer = new AddressableLEDBuffer(Constants.Blinkens.buffer);
         led = new AddressableLED(RobotMap.PWM.BLINKEN);
         //Configure the settings for the blinkens
@@ -32,9 +30,16 @@ public class Blinken{
         led.setData(buffer);
    }
 
-   public void setDefualt(){
+   public void setNamedColor(Colors color){
+    for(var i = 0; i < buffer.getLength(); i++){
+        buffer.setRGB(i, color.r, color.g, color.b);
+     }
+     led.setData(buffer);
+   }
+
+   public void setDefault(){
        for(var i = 0; i < buffer.getLength(); i++){
-           //Hot pink lets go
+           //Hot pink let's go
            buffer.setRGB(i, 255,105,180);
         }
         led.setData(buffer);
@@ -52,9 +57,27 @@ public class Blinken{
        led.stop();
    }
 
-   protected class Colors{
-       //In the long run we will be useing this class to store more dynamic colours
-       protected short[] green = {0,100,0};
-       protected short[] blue = {0,0,255};
+   public static enum Colors{
+       //In the long run we will be using this class to store more dynamic colours
+
+       RED(255,0,0),
+       ORANGE(255,127,0),
+       YELLOW(255,255,0),
+       LIGHTGREEN(0,255,0),
+       GREEN(0,100,0),
+       BLUE(0,0,255),
+       LIGHTPURPLE(148,0,211),
+       DARKPURPLE(75,0,130),
+       OUTLIERSGARNET(241,230,8),
+       OUTLIERSYELLOW(248,192,14);
+
+        public final int r,g,b;
+
+        Colors(int r, int g, int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+       }
+
    }
 }

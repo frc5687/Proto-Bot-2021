@@ -65,7 +65,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _time = _timer.get();
         new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
         //Set the blinkens to default
-        lights.setDefualt();
+        lights.setDefault();
     }
 
     /**
