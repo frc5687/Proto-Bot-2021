@@ -20,7 +20,7 @@ public class Constants {
         public static final double FRONT_LEFT_ENCODER_OFFSET = Math.PI * 1.9; // radians
         public static final Translation2d FRONT_RIGHT_POSITION =
                 new Translation2d(WIDTH / 2.0, -LENGTH / 2.0);
-        public static final double FRONT_RIGHT_ENCODER_OFFSET = -1.01; // radians
+        public static final double FRONT_RIGHT_ENCODER_OFFSET = Math.PI * 1.6853982; // radians
         public static final Translation2d BACK_LEFT_POSITION =
                 new Translation2d(-WIDTH / 2.0, LENGTH / 2.0);
         public static final double BACK_RIGHT_ENCODER_OFFSET = Math.PI * 1.2; // radians
