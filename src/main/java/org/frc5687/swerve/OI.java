@@ -3,7 +3,6 @@ package org.frc5687.swerve;
 
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.util.Helpers.*;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -31,7 +30,6 @@ public class OI extends OutliersProxy {
         yIn = getSpeedFromAxis(translation, translation.getYChannel());
         //yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         yIn = applyDeadband(yIn, DEADBAND);
-
         double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
         yOut = (yOut + (yIn * 2)) / 3.0;
         return yOut;  
@@ -41,7 +39,6 @@ public class OI extends OutliersProxy {
         xIn = -getSpeedFromAxis(translation, translation.getXChannel());
         //xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
         xIn = applyDeadband(xIn, DEADBAND);
-
         double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
         xOut = (xOut + (xIn * 2)) / 3.0;
         return xOut;
