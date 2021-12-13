@@ -16,8 +16,8 @@ public class OI extends OutliersProxy {
     private double xIn = 0;
 
     public OI() {
-        translation = new Joystick(5);
-        rotation = new Joystick(0);
+        translation = new Joystick(0);
+        rotation = new Joystick(5);
     }
 
     public void initializeButtons(DriveTrain driveTrain) {}
@@ -25,7 +25,7 @@ public class OI extends OutliersProxy {
     public double getDriveY() {
         yIn = getSpeedFromAxis(translation, translation.getYChannel());
         //yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        yIn = applyDeadband(yIn, DEADBAND);
+        yIn = applyDeadband(yIn, Constants.DriveTrain.DEADBAND);
         double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
         yOut = (yOut + (yIn * 2)) / 3.0;
         return yOut;  
@@ -34,20 +34,20 @@ public class OI extends OutliersProxy {
     public double getDriveX() {
         xIn = -getSpeedFromAxis(translation, translation.getXChannel());
         //xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
-        xIn = applyDeadband(xIn, DEADBAND);
+        xIn = applyDeadband(xIn, Constants.DriveTrain.DEADBAND);
         double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
         xOut = (xOut + (xIn * 2)) / 3.0;
         return xOut;
     }
 
     public double getRotationX() {
-        double speed = getSpeedFromAxis(rotation, rotation.getZChannel());
-        speed = applyDeadband(speed, 0.2);
+        double speed = getSpeedFromAxis(rotation, rotation.getYChannel());
+        speed = applyDeadband(speed, Constants.DriveTrain.DEADBAND);
         return speed;
     }
 
-    protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
-        return gamepad.getRawAxis(axisNumber);
+    protected double getSpeedFromAxis(Joystick joystick, int axisNumber) {
+        return joystick.getRawAxis(axisNumber);
     }
 
     @Override
