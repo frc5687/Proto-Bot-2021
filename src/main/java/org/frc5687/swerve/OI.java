@@ -40,10 +40,12 @@ public class OI extends OutliersProxy {
     }
 
     public double getRotationX() {
-        return rotation.getX();
+        double speed = getSpeedFromAxis(rotation, rotation.getZChannel());
+        speed = Helpers.applyDeadband(speed, 0.2);
+        return speed;
     }
 
-    protected double getSpeedFromAxis(Joystick joystick, int axisNumber) {
+    public double getSpeedFromAxis(Joystick joystick, int axisNumber) {
         metric("Axis channel", axisNumber);
         metric("Axis", joystick.getRawAxis(axisNumber));
         return joystick.getRawAxis(axisNumber);
