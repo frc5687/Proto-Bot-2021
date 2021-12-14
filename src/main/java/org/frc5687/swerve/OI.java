@@ -35,7 +35,7 @@ public class OI extends OutliersProxy {
     private double xIn = 0;
 
     public OI() {
-        _driverGamepad = new Gamepad(0);
+        _driverGamepad = new Gamepad(5);
 
         _leftJoystick = new Joystick(1);
         _rightJoystick = new Joystick(2);
@@ -54,13 +54,14 @@ public class OI extends OutliersProxy {
         _driverXButton = new JoystickButton(_driverGamepad, Gamepad.Buttons.X.getNumber());
         _driverRightTrigger =
                 new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.2);
+
     }
 
     public void initializeButtons(DriveTrain driveTrain) {}
 
     public double getDriveY() {
-        //        yIn = getSpeedFromAxis(_leftJoystick, _leftJoystick.getYChannel());
-        yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        yIn = getSpeedFromAxis(_leftJoystick, _leftJoystick.getYChannel());
+        //yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         yIn = applyDeadband(yIn, DEADBAND);
 
         double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
@@ -69,8 +70,8 @@ public class OI extends OutliersProxy {
     }
 
     public double getDriveX() {
-        //        xIn = -getSpeedFromAxis(_leftJoystick, _leftJoystick.getXChannel());
-        xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
+        xIn = -getSpeedFromAxis(_leftJoystick, _leftJoystick.getXChannel());
+        //xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
         xIn = applyDeadband(xIn, DEADBAND);
 
         double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
@@ -79,7 +80,7 @@ public class OI extends OutliersProxy {
     }
 
     public double getRotationX() {
-        double speed = getSpeedFromAxis(_rightJoystick, _rightJoystick.getZChannel());
+        double speed = getSpeedFromAxis(_rightJoystick, _rightJoystick.getXChannel());
         speed = applyDeadband(speed, 0.2);
         return speed;
     }

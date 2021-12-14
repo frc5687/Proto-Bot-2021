@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import org.frc5687.swerve.util.*;
+import org.frc5687.swerve.util.PDP;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,6 +27,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     private Limelight limelight;
 
     private Blinkins blinkins;
+    private PDP pdp;
 
     private int _updateTick = 0;
 
@@ -60,6 +61,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _timer = new Timer();
         _robotContainer.init();
         blinkins = new Blinkins(0, 30);
+        pdp = new PDP();
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
@@ -123,6 +125,8 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         update();
         updateDashboard();
         updateRainbow();
+        pdp.brownout();
+        pdp.checkChannels();
     }
 
     /** This function is called periodically during test mode. */

@@ -12,9 +12,15 @@ public class PDP {
         pdp = new PowerDistributionPanel(RobotMap.PDP.PDP_ID);
     }
 
-    public void brownout(){
+    public boolean brownout(){
         //Detect a brownout
         if(getVoltage() <= Constants.PDP.BROWOUT_VOLTAGE){
+            //There is a brownout
+            return true;
+        }
+        else{
+            //There is no brownout
+            return false;
         }
     }
 
@@ -38,10 +44,22 @@ public class PDP {
         SmartDashboard.putNumber("PDP/Current3", pdp.getCurrent(15));
     }
 
+    public boolean checkChannels(){
+        for(int i = 0; i < 15; i++){
+            if(excessiveCurrent(i) != true){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    }
+
     public boolean excessiveCurrent(int channel){
         //0-3 12-15
         for(int start = 12; start < 15; start++){
-            if(pdp.getCurrent(start) >= Constants.PDP.CURRENT_THRES)){
+            if(pdp.getCurrent(start) >= Constants.PDP.CURRENT_THRES){
                 //If the currents exceds what ever
                 return true;
             }
@@ -50,7 +68,7 @@ public class PDP {
             }
         }
         for(int i = 0; i < 3; i++){
-            if(pdp.getCurrent(i) >= Constants.PDP.CURRENT_THRES)){
+            if(pdp.getCurrent(i) >= Constants.PDP.CURRENT_THRES){
                 //If the currents exceds what ever
                 return true;
             }
@@ -58,16 +76,9 @@ public class PDP {
                 return false;
             }
         }
+        return false;
     }
 
-    public void clear stickyFaults(){
-        /**
-         * A "sticky fault" happens when the voltage supplied drops below 6.5V. What you want to do is spam click "self test" rapidly until it's gone.
-         * Also, you'll want to make sure the voltage supplied stays above 6.5V.
-         */
-        pdp.clearStickyFaults();
-    }
-    
     public double getVoltage(){
         return pdp.getVoltage();
     }
