@@ -15,8 +15,8 @@ public class OI extends OutliersProxy {
     private double xIn = 0;
 
     public OI() {
-        translate = new Joystick(1);
-        rotation = new Joystick(0);
+        translate = new Joystick(0);
+        rotation = new Joystick(1);
     }
 
     public void initializeButtons(DriveTrain driveTrain) {}
