@@ -23,9 +23,8 @@ public class OI extends OutliersProxy {
 
     public double getDriveY() {
         yIn = getSpeedFromAxis(translate, translate.getYChannel());
-        //        yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         yIn = Helpers.applyDeadband(yIn, Constants.DriveTrain.DEADBAND);
-
+        metric("Translate Y Channel", translate.getYChannel());
         double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
         yOut = (yOut + (yIn * 2)) / 3.0;
         return yOut;
@@ -34,7 +33,7 @@ public class OI extends OutliersProxy {
     public double getDriveX() {
         xIn = -getSpeedFromAxis(translate, translate.getXChannel());
         xIn = Helpers.applyDeadband(xIn, Constants.DriveTrain.DEADBAND);
-
+        metric("Translate X Channel", translate.getXChannel());
         double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
         xOut = (xOut + (xIn * 2)) / 3.0;
         return xOut;
@@ -45,8 +44,8 @@ public class OI extends OutliersProxy {
     }
 
     protected double getSpeedFromAxis(Joystick joystick, int axisNumber) {
+        metric("Axis channel", axisNumber);
         metric("Axis", joystick.getRawAxis(axisNumber));
-        metric("Axis port", axisNumber);
         return joystick.getRawAxis(axisNumber);
     }
 
