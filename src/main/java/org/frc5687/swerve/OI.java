@@ -4,6 +4,7 @@ package org.frc5687.swerve;
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.util.Helpers.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import org.frc5687.swerve.subsystems.DriveTrain;
@@ -79,8 +80,10 @@ public class OI extends OutliersProxy {
     }
 
     public double getRotationX() {
-        double speed = getSpeedFromAxis(_rightJoystick, _rightJoystick.getZChannel());
-        speed = applyDeadband(speed, 0.2);
+        double speed;
+        speed = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        //speed = getSpeedFromAxis(_rightJoystick, _rightJoystick.getZChannel());
+        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         return speed;
     }
 
@@ -89,5 +92,8 @@ public class OI extends OutliersProxy {
     }
 
     @Override
-    public void updateDashboard() {}
+    public void updateDashboard() {
+        SmartDashboard.putNumber("Y raw values", yIn);
+        SmartDashboard.putNumber("X raw values", xIn);
+    }
 }
