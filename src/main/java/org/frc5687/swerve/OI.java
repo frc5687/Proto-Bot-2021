@@ -57,7 +57,9 @@ public class OI extends OutliersProxy {
                 new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.2);
     }
 
-    public void initializeButtons(DriveTrain driveTrain) {}
+    public void initializeButtons(DriveTrain driveTrain) {
+
+    }
 
     public double getDriveY() {
         //        yIn = getSpeedFromAxis(_leftJoystick, _leftJoystick.getYChannel());
