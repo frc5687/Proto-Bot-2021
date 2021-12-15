@@ -33,6 +33,7 @@ public class Maverick extends OutliersCommand{
 
     public double getVelocityTheta(double vx, double vy){
         //The fraction would look like vx/vy
+        //Convert to decimal then take the inverse tanh
         return Math.atan(vy/vx);
     }
 

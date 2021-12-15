@@ -29,6 +29,7 @@ public class Constants{
     
             public static final double DEADBAND = 0.2;
             public static final double ROTATION_DEADBAND = 0.2;
+            public static final double ROTATION_SPEED = 0.5;
     
             public static double MAX_MPS = 3.5; // Max speed of robot (m/s) .
     
