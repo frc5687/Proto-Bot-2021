@@ -3,6 +3,7 @@ package org.frc5687.swerve;
 
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.util.Helpers.*;
+import org.frc5687.swerve.commands.Maverick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -30,6 +31,7 @@ public class OI extends OutliersProxy {
     private Button _driverXButton;
     private Button _driverYButton;
     private Button _driverRightTrigger;
+    private Maverick maverick;
     //Test
 
     private double yIn = 0;
@@ -39,12 +41,12 @@ public class OI extends OutliersProxy {
         _driverGamepad = new Gamepad(5);
 
         _leftJoystick = new Joystick(1);
-        _rightJoystick = new Joystick(2);
+        _rightJoystick = new Joystick(0);
 
         _driverRightStickButton =
                 new JoystickButton(_driverGamepad, Gamepad.Buttons.RIGHT_STICK.getNumber());
 
-        _trigger = new JoystickButton(_rightJoystick, 1);
+        _trigger = new JoystickButton(_rightJoystick, 1); //For Maverick
         _thumbButton = new JoystickButton(_rightJoystick, 2);
         _shootButton = new JoystickButton(_leftJoystick, 1);
         _resetYawButton = new JoystickButton(_rightJoystick, 4);
@@ -58,12 +60,12 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(DriveTrain driveTrain) {
-
+        _trigger.whileHeld(new Maverick(driveTrain));
     }
 
     public double getDriveY() {
-        //        yIn = getSpeedFromAxis(_leftJoystick, _leftJoystick.getYChannel());
-        yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        yIn = getSpeedFromAxis(_leftJoystick, _leftJoystick.getYChannel());
+        //yIn = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         yIn = applyDeadband(yIn, DEADBAND);
 
         double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
@@ -72,8 +74,8 @@ public class OI extends OutliersProxy {
     }
 
     public double getDriveX() {
-        //        xIn = -getSpeedFromAxis(_leftJoystick, _leftJoystick.getXChannel());
-        xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
+        xIn = -getSpeedFromAxis(_leftJoystick, _leftJoystick.getXChannel());
+        //xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
         xIn = applyDeadband(xIn, DEADBAND);
 
         double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
@@ -83,10 +85,10 @@ public class OI extends OutliersProxy {
 
     public double getRotationX() {
         double speed;
-        speed = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-        //speed = getSpeedFromAxis(_rightJoystick, _rightJoystick.getZChannel());
+        speed = getSpeedFromAxis(_rightJoystick, _rightJoystick.getXChannel());
         speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-        return Math.pow(speed, Constants.DriveTrain.ROTATION_SPEED);
+        return speed;
+        
     }
 
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
