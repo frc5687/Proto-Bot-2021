@@ -42,7 +42,6 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(DriveTrain driveTrain) {
-        metric("BTN init", "hello");
         maverickBTN.whenActive(new Maverick(driveTrain));
     }
 

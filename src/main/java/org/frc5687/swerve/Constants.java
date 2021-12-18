@@ -117,4 +117,9 @@ public class Constants{
                 public static final double ANGULAR_I = 0;
                 public static final double ANGULAR_D = 0;
         }
+
+        public class Jetson{
+                public static final int port = 5000;
+                public static final String localhost = "127.0.0.1";
+        }
 }
