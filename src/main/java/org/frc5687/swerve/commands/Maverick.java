@@ -20,10 +20,9 @@ public class Maverick extends OutliersCommand{
      * Output: [Velocity]
      * @param _driveTrain
      */
-    
+
     public Maverick(DriveTrain _driveTrain){
         driveTrain = _driveTrain;
-        addRequirements(driveTrain);
     }
 
     public void Afterburner(){
@@ -33,7 +32,6 @@ public class Maverick extends OutliersCommand{
 
     public double getVelocityTheta(double vx, double vy){
         //The fraction would look like vx/vy
-        //Convert to decimal then take the inverse tanh
         return Math.atan(vy/vx);
     }
 
@@ -67,17 +65,17 @@ public class Maverick extends OutliersCommand{
 
     public void wayPointMove(){
         //Iterate through all of the waypoints
-        metric("MAVERICK", "Running"); 
-        for(int i = 0; i <= Constants.Maverick.numberOfWaypoints; i++){
-            metric("MAVERICK_Points", "At waypoint: " + i);
+        metric("MAVERICK", "Running");
+        for(int i = 0; i < Constants.Maverick.numberOfWaypoints; i++){
+            metric("MAVERICK", "At waypoint: " + i);
             //Create translations and rotations based off of the Maverick presets
             Translation2d move = new Translation2d(Constants.Maverick.waypointsX[i], Constants.Maverick.waypointsY[i]);
             Rotation2d rotation = new Rotation2d(Constants.Maverick.rotations[i]);
             destnation = new Pose2d(move, rotation);
             //Update the speeds with the realivent Maverick speed
             Constants.DriveTrain.MAX_MPS = Constants.Maverick.speeds[i];
-            //Move the robot to the pose and do so with the linear velocity reference as determined by getTheAngluarVelocityVector()
-            driveTrain.poseFollower(destnation, rotation, getTheAngluarVelocityVector(driveTrain.getXVelocity(), driveTrain.getYVelocity()));
+            //Move the robot
+            driveTrain.poseFollower(destnation, rotation, 1.0);
         }
         metric("MAVERICK", "Move(s) Complete");
     }
@@ -91,19 +89,16 @@ public class Maverick extends OutliersCommand{
 
     @Override public void execute(){
         super.execute();
+        metric("MAVERICK", "Executeing");
+        wayPointMove();
     }
     
     @Override
     public boolean isFinished(){
         super.isFinished();
         //Is the robot at it's end position
-        if(driveTrain.MaverickDone(destnation)){
-            metric("MAVERICK", "Finished...I hope");
-            return true;
-        }else{
-            metric("MAVERICK", "Still Working");
-            return false;
-        }
+        metric("MAVERICK", "Finished");
+        return driveTrain.MaverickDone(destnation);
     }
 
     @Override

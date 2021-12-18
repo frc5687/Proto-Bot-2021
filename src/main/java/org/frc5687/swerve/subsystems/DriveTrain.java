@@ -3,7 +3,6 @@ package org.frc5687.swerve.subsystems;
 
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.RobotMap.CAN.TALONFX.*;
-
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -18,7 +17,6 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.trajectory.constraint.SwerveDriveKinematicsConstraint;
-
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.OI;
 import org.frc5687.swerve.RobotMap;
@@ -185,6 +183,14 @@ public class DriveTrain extends OutliersSubsystem {
         }else{
             return false;
         }
+    }
+
+    public void autoAim(){
+
+    }
+
+    public void reNax(){
+        _imu.reset();
     }
 
     public void setFrontRightModuleState(SwerveModuleState state) {

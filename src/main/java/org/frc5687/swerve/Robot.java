@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.frc5687.swerve.util.Limelight;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,6 +27,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     private int _updateTick = 0;
 
     private String _name;
+    private Limelight limelight;
 
     private RobotContainer _robotContainer;
 
@@ -54,6 +56,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _robotContainer = new RobotContainer(this, _identityMode);
         _timer = new Timer();
         _robotContainer.init();
+        limelight = new Limelight();
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)

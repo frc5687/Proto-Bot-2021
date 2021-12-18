@@ -25,7 +25,7 @@ public class Constants{
             public static final double FRONT_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI; // radians
             public static final Translation2d BACK_LEFT_POSITION =
                     new Translation2d(-WIDTH / 2.0, LENGTH / 2.0);
-            public static final double BACK_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI; // radians
+            public static final double BACK_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI + 0.007; // radians
             public static final Translation2d BACK_RIGHT_POSITION =
                     new Translation2d(-WIDTH / 2.0, -LENGTH / 2.0);
             public static final double BACK_LEFT_ENCODER_OFFSET = Math.PI; // radians
@@ -34,7 +34,7 @@ public class Constants{
             public static final double ROTATION_DEADBAND = 0.2;
             public static final double ROTATION_SPEED = 0.5;
     
-            public static double MAX_MPS = 2.5; // Max speed of robot (m/s) .
+            public static double MAX_MPS = 1.5; // Max speed of robot (m/s) .
     
             public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
             public static final double MAX_MPSS = 0.5; // Max acceleration of robot (m/s^2)
@@ -92,6 +92,7 @@ public class Constants{
             public static final double CONTROL_EFFORT = VOLTAGE;
         } 
         public static class Maverick{
+            //Constants for controling Maverick
             public static short numberOfWaypoints = 2; // Dropped down from four so Maverick doesn't overrun the position
             public static double[] waypointsX = {12.10, 2.0, 0.0, 0.0};
             public static double[] waypointsY = {3.67, 1.0, 0.0, 0.0};
@@ -99,5 +100,21 @@ public class Constants{
             public static double[] tolerences = {0.0, 0.0, 0.0, 0.0};
             public static double[] speeds = {3.5, 3.5, 3.5, 3.5, 3.5};
             public static boolean[] afterburner = {false, false, false, false};
+        }
+        public static class Field{
+                //The fields mesurements
+                public static final double TARGET_HEIGHT = 1.2192; //Meters
+                public static final double  CAMERA_PITCH = 0.3490659; //Radains
+        }
+
+        public static class AutoAim{
+                
+                public static final double CAMERA_HEIGHT = 0.381; //Meters
+                public static final double LINEAR_P = 0;
+                public static final double LINEAR_I = 0;
+                public static final double LINEAR_D = 0;
+                public static final double ANGULAR_P = 0;
+                public static final double ANGULAR_I = 0;
+                public static final double ANGULAR_D = 0;
         }
 }
