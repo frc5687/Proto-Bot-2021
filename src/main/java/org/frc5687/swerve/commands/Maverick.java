@@ -1,7 +1,7 @@
 package org.frc5687.swerve.commands;
 
 import org.frc5687.swerve.Constants;
-import org.frc5687.swerve.subsystems.DriveTrain;
+import org.frc5687.swerve.subsystems.DriveTrain;  
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -23,10 +23,12 @@ public class Maverick extends OutliersCommand{
 
     public Maverick(DriveTrain _driveTrain){
         driveTrain = _driveTrain;
+        addRequirements(driveTrain);
     }
 
     public void Afterburner(){
-        //Pushes the drive train as fast as it will safely go hyptheticly 
+        //Pushes the drive train up to 4.0 mps
+        //The theoretical max mps is 5.5
         Constants.DriveTrain.MAX_MPS = 4.0;
     }
 
@@ -59,10 +61,6 @@ public class Maverick extends OutliersCommand{
         }
     }
 
-    public void genLinearSystem(){
-
-    }
-
     public void wayPointMove(){
         //Iterate through all of the waypoints
         metric("MAVERICK", "Running");
@@ -75,7 +73,7 @@ public class Maverick extends OutliersCommand{
             //Update the speeds with the realivent Maverick speed
             Constants.DriveTrain.MAX_MPS = Constants.Maverick.speeds[i];
             //Move the robot
-            driveTrain.poseFollower(destnation, rotation, 1.0);
+            driveTrain.poseFollower(destnation, rotation, getTheAngluarVelocityVector(driveTrain.getXVelocity(), driveTrain.getYVelocity()));
         }
         metric("MAVERICK", "Move(s) Complete");
     }
@@ -89,8 +87,6 @@ public class Maverick extends OutliersCommand{
 
     @Override public void execute(){
         super.execute();
-        metric("MAVERICK", "Executeing");
-        wayPointMove();
     }
     
     @Override

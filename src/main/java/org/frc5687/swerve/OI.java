@@ -3,8 +3,6 @@ package org.frc5687.swerve;
 
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.util.Helpers.*;
-
-import org.frc5687.swerve.commands.Drive;
 import org.frc5687.swerve.commands.Maverick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,19 +32,18 @@ public class OI extends OutliersProxy {
 
     public OI() {
         gamepad = new Gamepad(5);
-        translation = new Joystick(0); //Translation
-        rotation = new Joystick(1); //Rotation
+        translation = new Joystick(1); //Translation
+        rotation = new Joystick(0); //Rotation
         maverickBTN = new JoystickButton(translation, 4);
         restNavX = new JoystickButton(translation, 5);
-        initializeButtons(driveTrain);
     }
 
     public void initializeButtons(DriveTrain driveTrain) {
-        maverickBTN.whenActive(new Maverick(driveTrain));
+        maverickBTN.whileHeld(new Maverick(driveTrain));
     }
 
     public double getDriveY() {
-        yIn = getSpeedFromAxis(translation, translation.getYChannel());
+        yIn = getSpeedFromAxis(translation, translation.getXChannel());
         //yIn = getSpeedFromAxis(gamepad, Gamepad.Axes.LEFT_X.getNumber());
         yIn = applyDeadband(yIn, DEADBAND);
         double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
@@ -55,7 +52,7 @@ public class OI extends OutliersProxy {
     }
 
     public double getDriveX() {
-        xIn = -getSpeedFromAxis(translation, translation.getXChannel());
+        xIn = -getSpeedFromAxis(translation, translation.getYChannel());
         //xIn = -getSpeedFromAxis(gamepad, Gamepad.Axes.LEFT_Y.getNumber());
         xIn = applyDeadband(xIn, DEADBAND);
         double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);

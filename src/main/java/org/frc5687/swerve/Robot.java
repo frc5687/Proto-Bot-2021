@@ -28,7 +28,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
 
     private String _name;
     private Limelight limelight;
-
+    private PCM pcm;
     private RobotContainer _robotContainer;
 
     private boolean _fmsConnected;
@@ -57,6 +57,9 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _timer = new Timer();
         _robotContainer.init();
         limelight = new Limelight();
+        pcm = new PCM();
+        pcm.run();
+        pcm.stop();
 
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)

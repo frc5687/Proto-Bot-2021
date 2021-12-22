@@ -94,9 +94,9 @@ public class Constants{
         public static class Maverick{
             //Constants for controling Maverick
             public static short numberOfWaypoints = 2; // Dropped down from four so Maverick doesn't overrun the position
-            public static double[] waypointsX = {12.10, 2.0, 0.0, 0.0};
-            public static double[] waypointsY = {3.67, 1.0, 0.0, 0.0};
-            public static double[] rotations = {2.0, 1.0, 0.0, 0.0};
+            public static double[] waypointsX = {0.0, 0.0, 0.0, 0.0};
+            public static double[] waypointsY = {0.0, 0.0, 0.0, 0.0};
+            public static double[] rotations = {0.0, 0.0, 0.0, 0.0};
             public static double[] tolerences = {0.0, 0.0, 0.0, 0.0};
             public static double[] speeds = {3.5, 3.5, 3.5, 3.5, 3.5};
             public static boolean[] afterburner = {false, false, false, false};
@@ -116,6 +116,9 @@ public class Constants{
                 public static final double ANGULAR_P = 0;
                 public static final double ANGULAR_I = 0;
                 public static final double ANGULAR_D = 0;
+                //Field dimentions in meters
+                public static final double FIELD_LENGHT = 16.46225;
+                public static final double FIELD_WIDTH = 7.946136;
         }
 
         public class Jetson{
