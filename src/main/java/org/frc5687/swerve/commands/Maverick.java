@@ -46,6 +46,8 @@ public class Maverick extends OutliersCommand{
     }
 
     public boolean getCheckPoints(int x1, int y1, int x2, int y2, int x, int y){
+        //x1 y1 and x2 y2 are two bounds of the field
+        //x y is the point in question
         //Is the point inside of the rectangle 
         //Double check the math
         if(x > x2 && x < x2 && y > y1 && y > y2){
