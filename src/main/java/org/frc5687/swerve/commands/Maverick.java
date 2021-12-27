@@ -1,7 +1,9 @@
 package org.frc5687.swerve.commands;
 
 import org.frc5687.swerve.Constants;
-import org.frc5687.swerve.subsystems.DriveTrain;  
+import org.frc5687.swerve.subsystems.DriveTrain;
+
+import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -45,12 +47,12 @@ public class Maverick extends OutliersCommand{
         return Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
     }
 
-    public boolean getCheckPoints(int x1, int y1, int x2, int y2, int x, int y){
+    public boolean getCheckPoints(int x, int y){
         //x1 y1 and x2 y2 are two bounds of the field
         //x y is the point in question
         //Is the point inside of the rectangle 
         //Double check the math
-        if(x > x2 && x < x2 && y > y1 && y > y2){
+        if(x > Constants.Maverick.x2 && x < Constants.Maverick.x2 && y > Constants.Maverick.y1 && y > Constants.Maverick.y2){
             //Inside of the rectangle
             System.out.println("Maverick: " + true);
             //блин!!

@@ -100,6 +100,7 @@ public class Constants{
             public static double[] tolerences = {0.0, 0.0, 0.0, 0.0};
             public static double[] speeds = {3.5, 3.5, 3.5, 3.5, 3.5};
             public static boolean[] afterburner = {false, false, false, false};
+            public static double[] MAGIC_NUMBERS = {0.0, 0.0, 0.0, 0.0};
             //This is the points Maverick can operate in
             public static double x1 = 0.0;
             public static double y1 = 0.0;
@@ -110,6 +111,9 @@ public class Constants{
                 //The fields mesurements
                 public static final double TARGET_HEIGHT = 1.2192; //Meters
                 public static final double  CAMERA_PITCH = 0.3490659; //Radains
+                //Field dimentions in meters
+                public static final double FIELD_LENGHT = 16.46225;
+                public static final double FIELD_WIDTH = 7.946136;
         }
 
         public static class AutoAim{
@@ -121,9 +125,6 @@ public class Constants{
                 public static final double ANGULAR_P = 0;
                 public static final double ANGULAR_I = 0;
                 public static final double ANGULAR_D = 0;
-                //Field dimentions in meters
-                public static final double FIELD_LENGHT = 16.46225;
-                public static final double FIELD_WIDTH = 7.946136;
         }
 
         public class Jetson{
