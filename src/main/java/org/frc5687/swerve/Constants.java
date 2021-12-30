@@ -94,7 +94,7 @@ public class Constants{
         public static class Maverick{
             //Constants for controling Maverick
             public static short numberOfWaypoints = 1; // Dropped down from four so Maverick doesn't overrun the position
-            public static double[] waypointsX = {0.0, 0.0, 0.0, 0.0};
+            public static double[] waypointsX = {0.0, 0.0, 0., 0.0};
             public static double[] waypointsY = {0.0, 0.0, 0.0, 0.0};
             public static double[] rotations = {0.0, 0.0, 0.0, 0.0};
             public static double[] tolerences = {0.0, 0.0, 0.0, 0.0};
@@ -128,7 +128,7 @@ public class Constants{
         }
 
         public class Jetson{
-                public static final int port = 5000;
-                public static final String localhost = "127.0.0.1";
+                public static final int PORT = 5000;
+                public static final String LOCAL_HOST = "127.0.0.1";
         }
 }

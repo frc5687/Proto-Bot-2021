@@ -2,8 +2,6 @@ package org.frc5687.swerve.commands;
 
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.subsystems.DriveTrain;
-
-import edu.wpi.first.wpilibj.SlewRateLimiter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -77,7 +75,7 @@ public class Maverick extends OutliersCommand{
             //Update the speeds with the realivent Maverick speed
             Constants.DriveTrain.MAX_MPS = Constants.Maverick.speeds[i];
             //Move the robot
-            driveTrain.poseFollower(destnation, rotation, getTheAngluarVelocityVector(driveTrain.getXVelocity(), driveTrain.getYVelocity()));
+            driveTrain.poseFollower(destnation, rotation, getTheAngluarVelocityVector(driveTrain.getXVelocity(), driveTrain.getYVelocity())); //Dampin with logs Adeline's idea blame her if it doesn't work
         }
         metric("MAVERICK", "Move(s) Complete");
     }
@@ -89,7 +87,8 @@ public class Maverick extends OutliersCommand{
         wayPointMove();
     }
 
-    @Override public void execute(){
+    @Override 
+    public void execute(){
         super.execute();
     }
     

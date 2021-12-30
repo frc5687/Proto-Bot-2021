@@ -21,18 +21,18 @@ import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.OI;
 import org.frc5687.swerve.RobotMap;
 import org.frc5687.swerve.util.OutliersContainer;
+import org.frc5687.swerve.util.Proxy;
 
 public class DriveTrain extends OutliersSubsystem {
     private DiffSwerveModule _frontRight;
     private DiffSwerveModule _frontLeft;
     private DiffSwerveModule _backRight;
     private DiffSwerveModule _backLeft;
-
+    private Proxy slam;
     private SwerveDriveKinematics _kinematics;
     private SwerveDriveOdometry _odomerty;
-
+    private Pose2d currentPose;
     private double _PIDAngle;
-
     private AHRS _imu;
     private OI _oi;
 
@@ -123,6 +123,10 @@ public class DriveTrain extends OutliersSubsystem {
         return _imu.getVelocityY();
     }
 
+    public void updatePose(){
+        slam = new Proxy();
+    }
+
     public void updateOdomerty(){
         // Update odometry with the robots built in sensors 
         _odomerty.update(
@@ -155,10 +159,8 @@ public class DriveTrain extends OutliersSubsystem {
 
         metric("BR/Encoder Azimuth Vel", _backRight.getAzimuthAngularVelocity());
         metric("BR/Predicted Azimuth Vel", _backRight.getPredictedAzimuthAngularVelocity());
-
         metric("BR/Encoder Wheel Vel", _backRight.getWheelVelocity());
         metric("BR/Predicted Wheel Vel", _backRight.getPredictedWheelVelocity());
-        metric("VSLAM Pose", updatePoseVSLAM().toString());
         metric("Odometry Pose", getOdometryPose().toString());
     }
 

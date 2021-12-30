@@ -18,6 +18,8 @@ public class JetsonProxy {
     public static final int JETSON_PORT = 27002;
     public static final int RIO_PORT = 27001;
     public static final int PERIOD = 10;
+    
+    private MetricTracker metric;
 
     private Socket socket;
     private ServerSocket server;
