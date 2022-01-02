@@ -23,7 +23,6 @@ public class RobotContainer extends OutliersContainer {
 
     private Robot _robot;
     private DriveTrain _driveTrain;
-    private Proxy jetson;
     private Maverick maverick;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
@@ -35,7 +34,6 @@ public class RobotContainer extends OutliersContainer {
         _oi = new OI();
         _imu = new AHRS(SPI.Port.kMXP, (byte) 200);
         _driveTrain = new DriveTrain(this, _oi, _imu);
-        jetson = new Proxy();
         maverick = new Maverick();
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
@@ -67,7 +65,6 @@ public class RobotContainer extends OutliersContainer {
     @Override
     public void updateDashboard() {
         _driveTrain.updateDashboard();
-        _driveTrain.updatePose();
     }
 
     public void controllerPeriodic() {

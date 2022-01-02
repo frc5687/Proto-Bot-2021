@@ -124,12 +124,8 @@ public class DriveTrain extends OutliersSubsystem {
         return _imu.getVelocityY();
     }
 
-    public void updatePose(){
-        slam = new Proxy();
-    }
-
     public void updateOdomerty(){
-        // Update odometry with the robots built in sensors 
+        // Update odometry with the robots built in sensors
         _odomerty.update(
             getHeading(),
             _frontLeft.getState(),
@@ -146,7 +142,7 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void periodic() {
         updateOdomerty();
-        updatePose();
+        slam.updatePose();
     }
 
     @Override
@@ -160,7 +156,6 @@ public class DriveTrain extends OutliersSubsystem {
         metric("BR/Predicted Azimuth Vel", _backRight.getPredictedAzimuthAngularVelocity());
         metric("BR/Encoder Wheel Vel", _backRight.getWheelVelocity());
         metric("BR/Predicted Wheel Vel", _backRight.getPredictedWheelVelocity());
-        metric("V-SLAM Pose Raw Packet", slam.getRawPacket());
         metric("Odometry Pose", getOdometryPose().toString());
     }
 

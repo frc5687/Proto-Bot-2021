@@ -4,20 +4,19 @@ package org.frc5687.swerve.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Proxy extends PrettyDash{
+public class Proxy extends Thread{
 
     private ServerSocket serverSocket;
     private Socket socket;
     private InputStream input;
     private boolean running = false;
-    private String packet = "";
 
     //Variables to stroe the robots position
     private double estX = 0.0;
@@ -25,33 +24,44 @@ public class Proxy extends PrettyDash{
     private double estTheta = 0.0;
 
     public Proxy(){
+
+    }
+
+    public void updatePose(){
         try{
-            serverSocket = new ServerSocket(1234);
-            DriverStation.reportWarning("Server Started", false);
-            DriverStation.reportWarning("Waiting client...", false);
-            int i = 0;
-            while(i > 20){
-                i = i + 1;
-                socket = serverSocket.accept();
-                DriverStation.reportWarning("Client accepted", false);
-                input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                packet = input.toString();
-                metric("VSLAM Pose: ", packet);
-                DriverStation.reportWarning("Jetson Message: " + packet, false);
+            serverSocket = new ServerSocket(5687);
+            DriverStation.reportWarning("Listening", false);
+            DriverStation.reportWarning("Waiting for Jetson...", false);
+            socket = serverSocket.accept();
+            DriverStation.reportWarning("Jetson connected", false);
+
+            input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));  
+
+            String line = " ";
+            int count = 0;
+            while(line != ":"){
+                try{
+                    byte[] hold;
+                    hold = input.readNBytes(5);
+                    line = new String(hold);
+                    DriverStation.reportWarning(line, false);
+                }catch(IOException i){
+                    DriverStation.reportWarning(i.toString(), true);
+                }
             }
-            stop();
+        socket.close();
+        input.close();
         }catch(Exception e){
-            DriverStation.reportError(e.toString(), false);
-            stop();
+            DriverStation.reportWarning(e.toString(), true);
         }
     }
 
-    public String getRawPacket(){
+    public String getRawPacket(String packet){
         //Get the raw
-        return packet;
+       return packet;
     }
 
-    private void proccessPacket(){
+    private void proccessPacket(String packet){
         //{x, y, theta}
         try{
             String[] poseData = packet.split(" ");
@@ -63,9 +73,9 @@ public class Proxy extends PrettyDash{
         }
     }
     
-    public Pose2d getPoseMeters(){
+    public Pose2d getPoseMeters(String packet){
         //Create a 2d pose of where on the field we think we are.
-        proccessPacket();
+        proccessPacket(packet);
         Rotation2d thetaRot = new Rotation2d(estTheta);
         Pose2d VEstPose = new Pose2d(estX, estY, thetaRot);
         return VEstPose;
@@ -76,7 +86,7 @@ public class Proxy extends PrettyDash{
         return running;
     }
 
-    public void stop(){
+    public void stopp(){
         //Stop the server form running
         try{
             socket.close();
