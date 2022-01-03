@@ -50,7 +50,7 @@ public class RobotMap {
      * only on device can be connected to each breaker, so the numbers should be unique.
      */
     public static class PDP {
-        public static final int PDP = 10;
+        public static final int PDP_ID = 0;
     }
 
     /**

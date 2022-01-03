@@ -12,7 +12,7 @@ public class Constants{
         public static final double METRIC_FLUSH_PERIOD = 1.0;
         public static final double UPDATE_PERIOD = 0.02;
         public static final double EPSILON = 0.00001;
-        public static final double DELTA = 1e-2; // Execptable error for unit testing
+        public static final double DELTA = 1e-2; // Execptable error used in unit testingS
         public static class DriveTrain {
     
             public static final double WIDTH = 0.6223;
@@ -128,7 +128,7 @@ public class Constants{
         }
 
         public class Jetson{
-                public static final int PORT = 5000;
+                public static final int PORT = 1234;
                 public static final String LOCAL_HOST = "127.0.0.1";
         }
 

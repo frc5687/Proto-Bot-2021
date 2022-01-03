@@ -45,6 +45,7 @@ public class DriveTrain extends OutliersSubsystem {
             _oi = oi;
             _imu = imu;
             jetson = new Jetson();
+            jetson.startListening();
             _frontRight =
                     new DiffSwerveModule(
                             FRONT_RIGHT_POSITION,
@@ -294,8 +295,8 @@ public class DriveTrain extends OutliersSubsystem {
         return _odomerty.getPoseMeters();
     }
 
-    public Pose2d getVSLAMPose(){
-        return jetson.getPose();
+    public String getVSLAMPose(){
+        return jetson.getRawPacket();
     }
 
     public void startModules() {
