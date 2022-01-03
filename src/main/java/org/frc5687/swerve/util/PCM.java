@@ -22,6 +22,23 @@ public class PCM {
     public void run(){
         //Start compressor
         comp.start();
+        running = true;
+    }
+
+    public boolean isRunning(){
+        return running;
+    }
+
+    public double getCurrent(){
+        return current;
+    }
+
+    public boolean getPressureSwitchValue(){
+        return pressureSwitch;
+    }
+
+    public boolean isEnabled(){
+        return enabled;
     }
 
     public void stop(){

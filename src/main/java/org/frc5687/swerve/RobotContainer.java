@@ -14,7 +14,7 @@ import org.frc5687.swerve.subsystems.DriveTrain;
 import org.frc5687.swerve.subsystems.OutliersSubsystem;
 import org.frc5687.swerve.util.JetsonProxy;
 import org.frc5687.swerve.util.OutliersContainer;
-import org.frc5687.swerve.util.Proxy;
+import org.frc5687.swerve.util.Jetson;
 
 public class RobotContainer extends OutliersContainer {
 

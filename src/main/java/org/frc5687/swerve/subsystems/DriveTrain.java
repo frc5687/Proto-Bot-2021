@@ -20,17 +20,17 @@ import edu.wpi.first.wpilibj.trajectory.constraint.SwerveDriveKinematicsConstrai
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.OI;
 import org.frc5687.swerve.RobotMap;
+import org.frc5687.swerve.util.Jetson;
 import org.frc5687.swerve.util.OutliersContainer;
-import org.frc5687.swerve.util.Proxy;
 
 public class DriveTrain extends OutliersSubsystem {
     private DiffSwerveModule _frontRight;
     private DiffSwerveModule _frontLeft;
     private DiffSwerveModule _backRight;
     private DiffSwerveModule _backLeft;
-    private Proxy slam;
     private SwerveDriveKinematics _kinematics;
     private SwerveDriveOdometry _odomerty;
+    private Jetson jetson;
     private Pose2d currentPose;
     private double _PIDAngle;
     private AHRS _imu;
@@ -41,11 +41,10 @@ public class DriveTrain extends OutliersSubsystem {
 
     public DriveTrain(OutliersContainer container, OI oi, AHRS imu) {
         super(container);
-        slam = new Proxy();
         try {
             _oi = oi;
             _imu = imu;
-
+            jetson = new Jetson();
             _frontRight =
                     new DiffSwerveModule(
                             FRONT_RIGHT_POSITION,
@@ -142,7 +141,7 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void periodic() {
         updateOdomerty();
-        slam.updatePose();
+        getVSLAMPose();
     }
 
     @Override
@@ -293,6 +292,10 @@ public class DriveTrain extends OutliersSubsystem {
 
     public Pose2d getOdometryPose() {
         return _odomerty.getPoseMeters();
+    }
+
+    public Pose2d getVSLAMPose(){
+        return jetson.getPose();
     }
 
     public void startModules() {
