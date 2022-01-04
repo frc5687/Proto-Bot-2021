@@ -295,8 +295,8 @@ public class DriveTrain extends OutliersSubsystem {
         return _odomerty.getPoseMeters();
     }
 
-    public String getVSLAMPose(){
-        return jetson.getRawPacket();
+    public Pose2d getVSLAMPose(){
+        return jetson.getPose();
     }
 
     public void startModules() {

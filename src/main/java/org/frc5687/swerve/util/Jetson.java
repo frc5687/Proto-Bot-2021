@@ -4,8 +4,6 @@ package org.frc5687.swerve.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -25,13 +23,14 @@ public class Jetson extends Thread{
     private boolean reading = false;
     private String line = " ";
     private Listener listener;
+    private DriverInterface driver;
     //Variables to stroe the robots position
     private double estX = 0.0;
     private double estY = 0.0;
     private double estTheta = 0.0;
 
     public Jetson(){
-
+        driver = new DriverInterface();
     }
 
     public void startListening(){
@@ -63,7 +62,7 @@ public class Jetson extends Thread{
             estY = Double.parseDouble(poseData[1]);
             estTheta = Double.parseDouble(poseData[3]);    
         }catch(Exception e){
-            DriverStation.reportError("Jetson Packet Handler: " + e.toString(), false);
+            driver.error(e.toString());
         }
     }
 
@@ -72,7 +71,7 @@ public class Jetson extends Thread{
         Pose2d pose = new Pose2d(estX, estY, estRot);
         return pose;
     }
-    
+
     public boolean isServerRunning(){
         //Check if the server is running
         return running;
@@ -88,20 +87,29 @@ public class Jetson extends Thread{
         }
     }
 
+    public void periodic(){
+        if(isServerRunning() == true){
+            getPose();
+        }else{
+            
+        }
+    }
+
     class Listener{
         //Start server
         public void run(){
             new Thread(() -> {
                 try{
-                    DriverStation.reportWarning("Waiting for Jetson on " + Constants.Jetson.PORT + "...", false);
+                    driver.warn("Starting Jetson Proxy Server");
+                    driver.warn("Waiting For Jetson Connection..");
                     socket = serverSocket.accept();
-                    DriverStation.reportWarning("Jetson connected", false);
+                    driver.warn("Jetson Connection Accepted");
                     String data = "";
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    DriverStation.reportWarning("Starting to read from Jetson", false);
+                    driver.warn("Reading From Jetson...");
                     while(reader.readLine() != null){
                         data = reader.readLine();
-                        DriverStation.reportWarning("Jetson: " + data, false);
+                        driver.warn("Data From Jetson: " + data.toString());
                         running = true;
                     }
                 }catch(Exception e){
