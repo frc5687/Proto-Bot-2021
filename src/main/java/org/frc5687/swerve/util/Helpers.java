@@ -100,4 +100,14 @@ public class Helpers {
         }
         return radians ? angle : Units.radiansToDegrees(angle);
     }
+    
+    /**
+     * This is a remove function done here so Gabe don't have to rewrite it everytime
+     * @param string the string to be changed
+     * @param rString the string to remove
+     * @return
+     */
+    public static String removeChar(String string, String rString){
+        return string.replaceFirst(rString, "");
+    }
 }

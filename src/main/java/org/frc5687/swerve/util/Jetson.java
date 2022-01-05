@@ -24,6 +24,7 @@ public class Jetson extends Thread{
     private String line = " ";
     private Listener listener;
     private DriverInterface driver;
+    private boolean end = false;
     //Variables to stroe the robots position
     private double estX = 0.0;
     private double estY = 0.0;
@@ -56,13 +57,18 @@ public class Jetson extends Thread{
 
     public void proccessPacket(String packet){
         //{x, y, theta}
-        try{
-            String[] poseData = packet.split(" ");
-            estX = Double.parseDouble(poseData[0]);
-            estY = Double.parseDouble(poseData[1]);
-            estTheta = Double.parseDouble(poseData[3]);    
-        }catch(Exception e){
-            driver.error(e.toString());
+        if(packet.contains("T") == true){
+            //It's a translation data packet
+            driver.warn("Translation Data Found: " + packet);
+            
+        }else{
+            if(packet.contains("R") == true){
+                //It's a rotation data packet
+                driver.warn("Rotation Data Found: " + packet);
+            }else{
+                //Cannot ID incomeing data packet
+                driver.error("Unidentified Data Packet Found: " + packet);
+            }
         }
     }
 
@@ -100,23 +106,20 @@ public class Jetson extends Thread{
         public void run(){
             new Thread(() -> {
                 try{
+                    byte[] messageByte = new byte[1000];
+                    String dataString = "";
                     driver.warn("Starting Jetson Proxy Server");
                     driver.warn("Waiting For Jetson Connection..");
                     socket = serverSocket.accept();
                     driver.warn("Jetson Connection Accepted");
-                    String data = "";
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    DataInputStream in = new DataInputStream(socket.getInputStream());
                     driver.warn("Reading From Jetson...");
-                    while(true){
-                        data = reader.readLine();
-                        running = true;
-                        String request = "";
-                        int count = 0;
-                        while(request != null){
-                            count = count + 1;
-                            request = reader.readLine();
-                            driver.warn("Data From Jetson: " + request);
-                        }
+                    while(!end){
+                        int bytesRead = in.read(messageByte);
+                        dataString += new String(messageByte, 0, bytesRead);
+                        proccessPacket(dataString);
+                        //Flush pose data
+                        dataString = "";
                     }
                 }catch(Exception e){
                     DriverStation.reportWarning(e.toString(), true);
