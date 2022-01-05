@@ -91,7 +91,7 @@ public class Jetson extends Thread{
         if(isServerRunning() == true){
             getPose();
         }else{
-            
+
         }
     }
 
@@ -107,10 +107,16 @@ public class Jetson extends Thread{
                     String data = "";
                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     driver.warn("Reading From Jetson...");
-                    while(reader.readLine() != null){
+                    while(true){
                         data = reader.readLine();
-                        driver.warn("Data From Jetson: " + data.toString());
                         running = true;
+                        String request = "";
+                        int count = 0;
+                        while(request != null){
+                            count = count + 1;
+                            request = reader.readLine();
+                            driver.warn("Data From Jetson: " + request);
+                        }
                     }
                 }catch(Exception e){
                     DriverStation.reportWarning(e.toString(), true);
