@@ -4,11 +4,11 @@ package org.frc5687.swerve.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import java.io.BufferedReader;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import org.frc5687.swerve.Constants;
@@ -24,6 +24,7 @@ public class Jetson extends Thread{
     private String line = " ";
     private Listener listener;
     private DriverInterface driver;
+    private Helpers helpers;
     private boolean end = false;
     //Variables to stroe the robots position
     private double estX = 0.0;
@@ -32,6 +33,7 @@ public class Jetson extends Thread{
 
     public Jetson(){
         driver = new DriverInterface();
+        helpers = new Helpers();
     }
 
     public void startListening(){
@@ -43,6 +45,12 @@ public class Jetson extends Thread{
         }
         listener = new Listener();
         listener.run();
+    }
+
+    public Pose2d getPose(){
+        Rotation2d robotRot = new Rotation2d();
+        Pose2d robotPose = new Pose2d(estX, estY, robotRot);
+        return robotPose;
     }
 
     public String getRawPacket(){
@@ -57,25 +65,37 @@ public class Jetson extends Thread{
 
     public void proccessPacket(String packet){
         //{x, y, theta}
-        if(packet.contains("T") == true){
-            //It's a translation data packet
-            driver.warn("Translation Data Found: " + packet);
-            
-        }else{
-            if(packet.contains("R") == true){
-                //It's a rotation data packet
-                driver.warn("Rotation Data Found: " + packet);
+        try{
+            if(packet.contains("T") == true){
+                //It's a translation data packet
+                //driver.warn("Translation Data Found: " + packet);
+                //There is at less a million ways to do this that are better but for now if it works it works
+                packet = packet.replace("T", "");
+                packet = packet.replace("(", "");
+                packet = packet.replace(")", "");
+                driver.warn(packet.toString());
+                String[] tData = packet.split(",");
+                SmartDashboard.putString("Translation X: ", tData[0]);
+                SmartDashboard.putString("Translation Y: ", tData[1]);
+                SmartDashboard.putString("Translation Z: ", tData[2]);
             }else{
-                //Cannot ID incomeing data packet
-                driver.error("Unidentified Data Packet Found: " + packet);
+                if(packet.contains("R") == true){
+                    //It's a rotation data packet
+                    packet.replace("R", "");
+                    packet.replace("((", "");
+                    packet.replace("))", "");
+                    String[] rData = packet.split(",");
+                    SmartDashboard.putString("Rotation X: ", rData[0]);
+                    SmartDashboard.putString("Rotation Y: ", rData[1]);
+                    SmartDashboard.putString("Rotation Z: ", rData[2]);
+                }else{
+                    //Cannot ID incomeing data packet
+                    driver.error("Unidentified Data Packet Found: " + packet);
+                }
             }
+        }catch(Exception e){
+            driver.warn(e.toString() + " No data to parse");
         }
-    }
-
-    public Pose2d getPose(){
-        Rotation2d estRot = new Rotation2d(estTheta);
-        Pose2d pose = new Pose2d(estX, estY, estRot);
-        return pose;
     }
 
     public boolean isServerRunning(){
@@ -117,6 +137,7 @@ public class Jetson extends Thread{
                     while(!end){
                         int bytesRead = in.read(messageByte);
                         dataString += new String(messageByte, 0, bytesRead);
+                        //driver.warn(dataString);
                         proccessPacket(dataString);
                         //Flush pose data
                         dataString = "";

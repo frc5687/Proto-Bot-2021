@@ -102,12 +102,26 @@ public class Helpers {
     }
     
     /**
-     * This is a remove function done here so Gabe don't have to rewrite it everytime
+     * This is a remove function which removes the first instance of the desired string
+     * Done here so Gabe don't have to rewrite it everytime
      * @param string the string to be changed
      * @param rString the string to remove
      * @return
      */
-    public static String removeChar(String string, String rString){
-        return string.replaceFirst(rString, "");
+    public String remove(String bString, String rString){
+        //DOSEN'T WORK
+        return bString.replaceFirst(rString, "");
+    }
+
+    /**
+     * This is a remove function which removes all instances of the desired string
+     * Done here so Gabe don't have to rewrite it everytime
+     * @param bString the string to be changed
+     * @param rString the string to remove
+     * @return
+     */
+    public String removeAll(String bString, String rString){
+        //DOESN'T WORK
+        return bString.replaceAll(rString, "");
     }
 }

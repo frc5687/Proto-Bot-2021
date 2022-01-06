@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
@@ -45,6 +46,7 @@ public class DriveTrain extends OutliersSubsystem {
             _oi = oi;
             _imu = imu;
             jetson = new Jetson();
+            jetson.isServerRunning();
             jetson.startListening();
             _frontRight =
                     new DiffSwerveModule(
@@ -134,9 +136,9 @@ public class DriveTrain extends OutliersSubsystem {
             _backRight.getState());
     }
 
-    public Pose2d updatePoseVSLAM(){
-        // Will splice in relivent code later
-        return _odomerty.getPoseMeters();
+    public void updatePose(){
+        currentPose = jetson.getPose();
+        SmartDashboard.putString("Robot Pose: ", currentPose.toString());
     }
 
     @Override
@@ -173,7 +175,7 @@ public class DriveTrain extends OutliersSubsystem {
     
     public boolean MaverickDone(Pose2d destnation){
         //Is Maverick at the end position
-        Pose2d cPose =  _odomerty.getPoseMeters();
+        Pose2d cPose = jetson.getPose();
         if(cPose == destnation){
             //Is the robots position equal to the Maverick supplied destenation
             return true;
