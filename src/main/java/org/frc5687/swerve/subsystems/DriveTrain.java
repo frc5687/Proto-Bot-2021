@@ -3,6 +3,9 @@ package org.frc5687.swerve.subsystems;
 
 import static org.frc5687.swerve.Constants.DriveTrain.*;
 import static org.frc5687.swerve.RobotMap.CAN.TALONFX.*;
+
+import javax.security.auth.DestroyFailedException;
+
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -175,9 +178,8 @@ public class DriveTrain extends OutliersSubsystem {
     
     public boolean MaverickDone(Pose2d destnation){
         //Is Maverick at the end position
-        Pose2d cPose = jetson.getPose();
-        if(cPose == destnation){
-            //Is the robots position equal to the Maverick supplied destenation
+        Pose2d pose = jetson.getPose();
+        if(pose.getX() - destnation.getX() < 0.5 && pose.getY() - destnation.getY() < 0.5){
             return true;
         }else{
             return false;

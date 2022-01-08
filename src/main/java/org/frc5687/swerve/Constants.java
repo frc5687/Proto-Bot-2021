@@ -22,22 +22,22 @@ public class Constants{
             public static final double FRONT_LEFT_ENCODER_OFFSET = Math.PI + Math.PI; // radians
             public static final Translation2d FRONT_RIGHT_POSITION =
                     new Translation2d(WIDTH / 2.0, -LENGTH / 2.0);
-            public static final double FRONT_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI; // radians
+            public static final double FRONT_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI - 0.195; // radians
             public static final Translation2d BACK_LEFT_POSITION =
                     new Translation2d(-WIDTH / 2.0, LENGTH / 2.0);
-            public static final double BACK_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI + 0.007; // radians
+            public static final double BACK_RIGHT_ENCODER_OFFSET = Math.PI + Math.PI - 0.13; // radians
             public static final Translation2d BACK_RIGHT_POSITION =
                     new Translation2d(-WIDTH / 2.0, -LENGTH / 2.0);
             public static final double BACK_LEFT_ENCODER_OFFSET = Math.PI; // radians
     
-            public static final double DEADBAND = 0.2;
+            public static final double DEADBAND = 0.5;
             public static final double ROTATION_DEADBAND = 0.2;
             public static final double ROTATION_SPEED = 0.5;
     
             public static double MAX_MPS = 1.5; // Max speed of robot (m/s) .
     
             public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
-            public static final double MAX_MPSS = 0.5; // Max acceleration of robot (m/s^2)
+            public static final double MAX_MPSS = 0.2; // Max acceleration of robot (m/s^2)
     
             public static final double ANGLE_kP = 3.5;
             public static final double ANGLE_kI = 0.0;
@@ -93,12 +93,12 @@ public class Constants{
         } 
         public static class Maverick{
             //Constants for controling Maverick
-            public static short numberOfWaypoints = 1; // Dropped down from four so Maverick doesn't overrun the position
-            public static double[] waypointsX = {0.0, 0.0, 0., 0.0};
+            public static short numberOfWaypoints = 3; // Dropped down from four so Maverick doesn't overrun the position
+            public static double[] waypointsX = {-1.0, 1.0, 0.0, 0.0};
             public static double[] waypointsY = {0.0, 0.0, 0.0, 0.0};
             public static double[] rotations = {0.0, 0.0, 0.0, 0.0};
             public static double[] tolerences = {0.0, 0.0, 0.0, 0.0};
-            public static double[] speeds = {3.5, 3.5, 3.5, 3.5, 3.5};
+            public static double[] speeds = {1.5, 1.5, 1.5, 1.5, 1.5};
             public static boolean[] afterburner = {false, false, false, false};
             public static double[] MAGIC_NUMBERS = {0.0, 0.0, 0.0, 0.0};
             //This is the points Maverick can operate in

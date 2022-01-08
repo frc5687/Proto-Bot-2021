@@ -2,10 +2,10 @@ package org.frc5687.swerve.util;
 
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +20,6 @@ public class Jetson extends Thread{
     private InputStream stream;
     private DataInputStream input;
     private boolean running = false;
-    private boolean reading = false;
     private String line = " ";
     private Listener listener;
     private DriverInterface driver;
@@ -30,10 +29,12 @@ public class Jetson extends Thread{
     private double estX = 0.0;
     private double estY = 0.0;
     private double estTheta = 0.0;
+    private LinearFilter linear;
 
     public Jetson(){
         driver = new DriverInterface();
         helpers = new Helpers();
+        linear = LinearFilter.movingAverage(5);
     }
 
     public void startListening(){
@@ -47,8 +48,14 @@ public class Jetson extends Thread{
         listener.run();
     }
 
+    public Pose2d getPoseAlt(){
+        Rotation2d robotRot = new Rotation2d(linear.calculate(estTheta));
+        Pose2d robotPose = new Pose2d(linear.calculate(estX), linear.calculate(estY), robotRot);
+        return robotPose;
+    }
+
     public Pose2d getPose(){
-        Rotation2d robotRot = new Rotation2d();
+        Rotation2d robotRot = new Rotation2d(estTheta);
         Pose2d robotPose = new Pose2d(estX, estY, robotRot);
         return robotPose;
     }
@@ -64,30 +71,36 @@ public class Jetson extends Thread{
     }
 
     public void proccessPacket(String packet){
+        getPose();
         //{x, y, theta}
         try{
             if(packet.contains("T") == true){
                 //It's a translation data packet
                 //driver.warn("Translation Data Found: " + packet);
                 //There is at less a million ways to do this that are better but for now if it works it works
+                //T(Y, Z, X)
                 packet = packet.replace("T", "");
                 packet = packet.replace("(", "");
                 packet = packet.replace(")", "");
                 driver.warn(packet.toString());
                 String[] tData = packet.split(",");
-                SmartDashboard.putString("Translation X: ", tData[0]);
-                SmartDashboard.putString("Translation Y: ", tData[1]);
-                SmartDashboard.putString("Translation Z: ", tData[2]);
+                estX = Double.parseDouble(tData[2]);
+                estY = Double.parseDouble(tData[0]);
+                SmartDashboard.putString("Filtered X: ", getPose().toString());
+                SmartDashboard.putString("Translation Y: ", tData[0]);
+                SmartDashboard.putString("Translation Z: ", tData[1]);
+                SmartDashboard.putString("Translation X: ", tData[2]);
             }else{
                 if(packet.contains("R") == true){
                     //It's a rotation data packet
-                    packet.replace("R", "");
-                    packet.replace("((", "");
-                    packet.replace("))", "");
+                    packet = packet.replace("R", "");
+                    packet = packet.replace("(", "");
+                    packet = packet.replace(")", "");
                     String[] rData = packet.split(",");
-                    SmartDashboard.putString("Rotation X: ", rData[0]);
-                    SmartDashboard.putString("Rotation Y: ", rData[1]);
-                    SmartDashboard.putString("Rotation Z: ", rData[2]);
+                    estTheta = Double.parseDouble(rData[2]);
+                    SmartDashboard.putString("Rotation Y: ", rData[0]);
+                    SmartDashboard.putString("Rotation Z: ", rData[1]);
+                    SmartDashboard.putString("Rotation X: ", rData[2]);
                 }else{
                     //Cannot ID incomeing data packet
                     driver.error("Unidentified Data Packet Found: " + packet);

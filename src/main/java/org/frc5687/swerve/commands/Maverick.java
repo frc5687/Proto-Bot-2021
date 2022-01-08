@@ -1,5 +1,7 @@
 package org.frc5687.swerve.commands;
 
+import java.sql.Driver;
+
 import org.frc5687.swerve.Constants;
 import org.frc5687.swerve.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -63,7 +65,11 @@ public class Maverick extends OutliersCommand{
         }
     }
 
-    public void wayPointMove(){
+    public double getTotalVelocity(){
+        return driveTrain.getXVelocity() + driveTrain.getYVelocity();
+    }
+
+    public void fly(){
         //Iterate through all of the waypoints
         metric("MAVERICK", "Running");
         for(int i = 0; i < Constants.Maverick.numberOfWaypoints; i++){
@@ -75,16 +81,24 @@ public class Maverick extends OutliersCommand{
             //Update the speeds with the realivent Maverick speed
             Constants.DriveTrain.MAX_MPS = Constants.Maverick.speeds[i];
             //Move the robot
-            driveTrain.poseFollower(destnation, rotation, getTheAngluarVelocityVector(driveTrain.getXVelocity(), driveTrain.getYVelocity())); //Dampin with logs Adeline's idea blame her if it doesn't work
+            driveTrain.poseFollower(destnation, rotation, 1.5); //Dampin with logs Adeline's idea blame her if it doesn't work
         }
         metric("MAVERICK", "Move(s) Complete");
+    }
+
+    public void land(){
+        metric("MAVERICK", "Lineing Up With Runway");
+        for(int i = 0; i < 1; i++){
+            metric("MAVERICK", "Landing");
+           // driveTrain.poseFollower(, , vel);
+        }
     }
 
     @Override
     public void initialize() {
         super.initialize();
         metric("MAVERICK", "Init");
-        wayPointMove();
+        fly();
     }
 
     @Override 
@@ -96,7 +110,6 @@ public class Maverick extends OutliersCommand{
     public boolean isFinished(){
         super.isFinished();
         //Is the robot at it's end position
-        metric("MAVERICK", "Finished");
         return driveTrain.MaverickDone(destnation);
     }
 
